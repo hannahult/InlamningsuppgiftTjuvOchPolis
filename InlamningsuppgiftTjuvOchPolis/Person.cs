@@ -31,34 +31,36 @@ namespace InlamningsuppgiftTjuvOchPolis
 
         }
 
-        public static void Move(int[,] area, List <Person> persons)
+        public static List <Person> Move( List<Person>  persons)
         {
-            foreach (Person person in persons)
+
+            for (int i = 0; i < persons.Count; i++)
             {
-                person.PositionX += person.DirectionX;
-                person.PositionY += person.DirectionY;
+
+                persons[i].PositionX += persons[i].DirectionX;
+                persons[i].PositionY += persons[i].DirectionY;
 
 
-                if (person.PositionY >= area.GetLength(0))
+                if (persons[i].PositionY > 25)
                 {
-                    person.PositionY = 1;
+                    persons[i].PositionY = 1;
                 }
-                else if (person.PositionY < area.GetLength(0))
+                if (persons[i].PositionY < 1)
                 {
-                    person.PositionY = 25;
+                    persons[i].PositionY = 25;
                 }
 
-                if (person.PositionX >= area.GetLength(1))
+                if (persons[i].PositionX > 100)
                 {
-                    person.PositionX = 1;
+                    persons[i].PositionX = 1;
                 }
-                else if (person.PositionX < area.GetLength(1))
+                if (persons[i].PositionX < 1)
                 {
-                    person.PositionX = 100;
+                    persons[i].PositionX = 100;
                 }
 
             }
-
+            return persons;
 
         }
     }
@@ -76,35 +78,31 @@ namespace InlamningsuppgiftTjuvOchPolis
         }
 
         
-        public static List<Person> Meet(Polis polis, List<Person> persons)
+        public static List<Person> Meet(Person polis, List<Person> persons)
         {
             foreach (Person person in persons)
             {
                 if (polis.PositionX == person.PositionX && polis.PositionY == person.PositionY)
                 {
                     if (person is Tjuv)
-                    {
-                        foreach (Sak sak in person.Stoldgods)
+                    {                 
+                        for (int i = 0; i < ((Tjuv)person).Stoldgods.Count; i++) 
+                           
                         {
-                            polis.Beslagtaget.Add(sak);
-                            person.Stoldgods.Remove(sak);
-                            
-                            //skicka till status
+                            ((Polis)polis).Beslagtaget.Add(((Tjuv)person).Stoldgods[i]);
+                            ((Tjuv)person).Stoldgods.RemoveAt(i);
+
+                            string status = "Polis beslagtar tjuvs stöldgods: " + polis.PositionX + ", " + polis.PositionY + "\n";
+
+                            Helpers.WriteStatus(status);
 
                         }
                     }
                 }
 
             }
-
             return persons;
-
         }
-
-
-      
-
-        
     }
 
     class Tjuv : Person
@@ -117,10 +115,33 @@ namespace InlamningsuppgiftTjuvOchPolis
             
             Stoldgods = stoldgods;
         }
+        public static List<Person> Meet(Person tjuv, List<Person> persons)
+        {
+            foreach (Person person in persons)
+            {
+                if (tjuv.PositionX == person.PositionX && tjuv.PositionY == person.PositionY )
+                {
+                    if (person is Medborgare && ((Medborgare)person).Tillhorigheter.Count != 0 )
+                    {
 
-        
+                        int index = Random.Shared.Next(0, ((Medborgare)person).Tillhorigheter.Count -1);
+                        
+                        ((Tjuv)tjuv).Stoldgods.Add(((Medborgare)person).Tillhorigheter[index]);
 
-        
+                        ((Medborgare)person).Tillhorigheter.RemoveAt(index);
+
+                        string status = "Tjuv rånar medborgare: " + tjuv.PositionX + ", " + tjuv.PositionY + "\n";    
+                        
+                        Helpers.WriteStatus(status);
+                    }
+                }
+
+            }
+
+            return persons;
+
+        }
+
     }
     class Medborgare : Person
     {

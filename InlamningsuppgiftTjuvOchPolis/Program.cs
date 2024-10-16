@@ -35,6 +35,7 @@ namespace InlamningsuppgiftTjuvOchPolis
             }
 
             Helpers.DrawWorld(persons);
+            //Helpers.WriteWorld(persons);
 
 
         }
