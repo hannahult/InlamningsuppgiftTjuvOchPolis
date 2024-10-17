@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace InlamningsuppgiftTjuvOchPolis
 {
@@ -23,11 +24,6 @@ namespace InlamningsuppgiftTjuvOchPolis
 
             DirectionX = Random.Shared.Next(-1, 2);
             DirectionY = Random.Shared.Next(-1, 2);
-
-        }
-
-        public virtual void Meet()
-        {
 
         }
 
@@ -92,9 +88,10 @@ namespace InlamningsuppgiftTjuvOchPolis
                             ((Polis)polis).Beslagtaget.Add(((Tjuv)person).Stoldgods[i]);
                             ((Tjuv)person).Stoldgods.RemoveAt(i);
 
-                            string status = "Polis beslagtar tjuvs stöldgods: " + polis.PositionX + ", " + polis.PositionY + "\n";
-
-                            Helpers.WriteStatus(status);
+                            string status = ("Polis beslagtar tjuvs stöldgods: " + polis.PositionX + ", " + polis.PositionY + "\n");
+                            Console.SetCursorPosition(0, 25);
+                            Console.WriteLine(status);
+                            Thread.Sleep(2000);
 
                         }
                     }
@@ -124,15 +121,17 @@ namespace InlamningsuppgiftTjuvOchPolis
                     if (person is Medborgare && ((Medborgare)person).Tillhorigheter.Count != 0 )
                     {
 
-                        int index = Random.Shared.Next(0, ((Medborgare)person).Tillhorigheter.Count -1);
+                        int index = Random.Shared.Next(0, ((Medborgare)person).Tillhorigheter.Count);
                         
                         ((Tjuv)tjuv).Stoldgods.Add(((Medborgare)person).Tillhorigheter[index]);
 
                         ((Medborgare)person).Tillhorigheter.RemoveAt(index);
 
-                        string status = "Tjuv rånar medborgare: " + tjuv.PositionX + ", " + tjuv.PositionY + "\n";    
-                        
-                        Helpers.WriteStatus(status);
+                        string status = "Tjuv rånar medborgare: " + tjuv.PositionX + ", " + tjuv.PositionY + "\n";
+                        Console.SetCursorPosition(0, 25);
+                        Console.WriteLine(status);
+                        Thread.Sleep(2000);
+
                     }
                 }
 

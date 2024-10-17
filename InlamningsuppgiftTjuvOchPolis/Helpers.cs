@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net.NetworkInformation;
 
 namespace InlamningsuppgiftTjuvOchPolis
 {
@@ -12,105 +13,94 @@ namespace InlamningsuppgiftTjuvOchPolis
     {
         public static void DrawWorld(List<Person> persons)
         {
-            while (true)
+            while (true) 
             {
+                Console.SetCursorPosition(0, 29);
+                Console.WriteLine("Antal rånade medborgare: ");
+                Console.WriteLine("Antal gripna tjuvar: ");
+
+
                 for (int i = 0; i < persons.Count; i++)
+            {
+                if (persons[i] is Medborgare)
                 {
-                    if (persons[i] is Polis)
-                    {
-
-
-                        Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
-                        Console.Write("P");
-
-                        Polis.Meet(persons[i], persons);
-
-                        
-
-                    }
-                
-
-                    if (persons[i] is Tjuv)
-                    {
-                        Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
-                        Console.Write("T");
-                        Tjuv.Meet(persons[i], persons);
-
-                        
-
-                    }
-               
-                    if (persons[i] is Medborgare)
-                    {
-                        Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
-                        Console.Write("M");
-
-                       
-                    }
+                    Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
+                    Console.Write("M");
 
                 }
-            
-                Person.Move(persons);
 
-                
+                if (persons[i] is Polis)
+                {
+                    Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
+                    Console.Write("P");
 
-                Thread.Sleep(2000);
-                Console.Clear();
-                
+                    Polis.Meet(persons[i], persons);
+
+                }
+
+                if (persons[i] is Tjuv)
+                {
+                    Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
+                    Console.Write("T");
+
+                    Tjuv.Meet(persons[i], persons);
+
+                }
 
             }
 
+                Person.Move(persons);
+
+                Thread.Sleep(200);
+                Console.Clear();
+            }
         }
 
         public static void WriteWorld(List<Person> persons)
         {
             while (true)
             {
-                foreach (Person person in persons)
-                {
-                    Console.Write(person.GetType() + " " + person.PositionX + ", " + person.PositionY + "\t");
+                Console.SetCursorPosition(0, 0);
 
-                    if (person is Medborgare)
+                for (int i = 0; i < persons.Count; i++)
                     {
-                        foreach (Sak sak in ((Medborgare)person).Tillhorigheter)
+                    Console.Write(persons[i].GetType().Name + " " + persons[i].PositionX + ", " + persons[i].PositionY + "\t");
+
+                    if (persons[i] is Medborgare)
+                    {
+                        foreach (Sak sak in ((Medborgare)persons[i]).Tillhorigheter)
                         {
                             Console.Write(sak.Type + ", ");
                         }
                     }
 
-                    if (person is Tjuv)
+                    if (persons[i] is Tjuv)
                     {
-                        foreach (Sak sak in ((Tjuv)person).Stoldgods)
+                        Tjuv.Meet(persons[i], persons);
+
+                        foreach (Sak sak in ((Tjuv)persons[i]).Stoldgods)
                         {
                             Console.Write(sak.Type + ", ");
                         }
                     }
 
-                    if (person is Polis)
+                    if (persons[i] is Polis)
                     {
-                        foreach (Sak sak in ((Polis)person).Beslagtaget)
+                        Polis.Meet(persons[i], persons);
+
+                        foreach (Sak sak in ((Polis)persons[i]).Beslagtaget)
                         {
                             Console.Write(sak.Type + ", ");
                         }
                     }
                     Console.WriteLine();
                 }
-                Person.Move(persons);              
+
+                Person.Move(persons);
+               
                 Thread.Sleep(200);
-                Console.Clear ();
-            }
-        }
+                Console.Clear();
 
-        public static void WriteStatus(string status)
-        {
-            List<string> historik = new List<string>();
-
-            historik.Add(status);
-
-            Console.SetCursorPosition(1,27);
-            foreach (string s in historik)
-            {
-                Console.Write(s);
             }
         }
 
@@ -148,9 +138,7 @@ namespace InlamningsuppgiftTjuvOchPolis
             }
 
             return medborgare;
-        }
-
-       
+        }  
 
     }
 }

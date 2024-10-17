@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading;
 
 namespace InlamningsuppgiftTjuvOchPolis
 {
@@ -21,6 +22,11 @@ namespace InlamningsuppgiftTjuvOchPolis
             
             List<Person> persons = new List<Person>();
 
+            
+            foreach (Medborgare medborgares in medborgare)
+            {
+                persons.Add(medborgares);
+            }
             foreach (Polis polis in poliser)
             {
                 persons.Add(polis);
@@ -29,15 +35,13 @@ namespace InlamningsuppgiftTjuvOchPolis
             {
                 persons.Add(tjuv);  
             }
-            foreach (Medborgare medborgares in medborgare)
-            {
-                persons.Add(medborgares);
-            }
-
+            
+           
             Helpers.DrawWorld(persons);
+        
             //Helpers.WriteWorld(persons);
 
-
+ 
         }
     }
 }
