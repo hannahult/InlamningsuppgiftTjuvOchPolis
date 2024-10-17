@@ -70,35 +70,33 @@ namespace InlamningsuppgiftTjuvOchPolis
             List<Sak> beslagtaget = new List<Sak>();
 
             Beslagtaget = beslagtaget;
-
         }
-
-        
-        public static List<Person> Meet(Person polis, List<Person> persons)
+     
+        public static int Meet(Person polis, List<Person> persons, int antalArrested)
         {
             foreach (Person person in persons)
             {
                 if (polis.PositionX == person.PositionX && polis.PositionY == person.PositionY)
                 {
-                    if (person is Tjuv)
-                    {                 
-                        for (int i = 0; i < ((Tjuv)person).Stoldgods.Count; i++) 
-                           
-                        {
+                    if (person is Tjuv && ((Tjuv)person).Stoldgods.Count!=0)
+                    {
+                        for (int i = 0; i < ((Tjuv)person).Stoldgods.Count; i++)                        
+                        {                           
                             ((Polis)polis).Beslagtaget.Add(((Tjuv)person).Stoldgods[i]);
                             ((Tjuv)person).Stoldgods.RemoveAt(i);
 
+                            antalArrested++;
+
                             string status = ("Polis beslagtar tjuvs stöldgods: " + polis.PositionX + ", " + polis.PositionY + "\n");
-                            Console.SetCursorPosition(0, 25);
+                            Console.SetCursorPosition(0, 26);
                             Console.WriteLine(status);
                             Thread.Sleep(2000);
-
-                        }
+                        } 
                     }
                 }
 
             }
-            return persons;
+            return antalArrested;
         }
     }
 
@@ -112,8 +110,9 @@ namespace InlamningsuppgiftTjuvOchPolis
             
             Stoldgods = stoldgods;
         }
-        public static List<Person> Meet(Person tjuv, List<Person> persons)
-        {
+        public static int Meet(Person tjuv, List<Person> persons, int antalRobbed)
+        {            
+            
             foreach (Person person in persons)
             {
                 if (tjuv.PositionX == person.PositionX && tjuv.PositionY == person.PositionY )
@@ -127,8 +126,10 @@ namespace InlamningsuppgiftTjuvOchPolis
 
                         ((Medborgare)person).Tillhorigheter.RemoveAt(index);
 
+                        antalRobbed++;
+                        
                         string status = "Tjuv rånar medborgare: " + tjuv.PositionX + ", " + tjuv.PositionY + "\n";
-                        Console.SetCursorPosition(0, 25);
+                        Console.SetCursorPosition(0, 26);
                         Console.WriteLine(status);
                         Thread.Sleep(2000);
 
@@ -137,7 +138,7 @@ namespace InlamningsuppgiftTjuvOchPolis
 
             }
 
-            return persons;
+            return antalRobbed;
 
         }
 
@@ -147,9 +148,7 @@ namespace InlamningsuppgiftTjuvOchPolis
         public List<Sak> Tillhorigheter { get; set; }
 
         public Medborgare():base()
-        {
-           
-            
+        {          
             List <Sak> tillhorigheter = new List<Sak>();
 
             tillhorigheter.Add(new Sak("nycklar"));
@@ -161,6 +160,4 @@ namespace InlamningsuppgiftTjuvOchPolis
 
         }
     }
-
-    
 }

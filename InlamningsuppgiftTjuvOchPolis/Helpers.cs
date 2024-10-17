@@ -13,15 +13,18 @@ namespace InlamningsuppgiftTjuvOchPolis
     {
         public static void DrawWorld(List<Person> persons)
         {
+            int antalArrested = 0;
+            int antalRobbed = 0;
+
             while (true) 
-            {
+            {                  
                 Console.SetCursorPosition(0, 29);
-                Console.WriteLine("Antal rånade medborgare: ");
-                Console.WriteLine("Antal gripna tjuvar: ");
+                Console.WriteLine("Antal rånade medborgare: " + antalRobbed);
+                Console.WriteLine("Antal gripna tjuvar: " + antalArrested);
 
 
                 for (int i = 0; i < persons.Count; i++)
-            {
+                {
                 if (persons[i] is Medborgare)
                 {
                     Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
@@ -34,7 +37,8 @@ namespace InlamningsuppgiftTjuvOchPolis
                     Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
                     Console.Write("P");
 
-                    Polis.Meet(persons[i], persons);
+                    antalArrested = Polis.Meet(persons[i], persons, antalArrested);
+                    
 
                 }
 
@@ -43,8 +47,8 @@ namespace InlamningsuppgiftTjuvOchPolis
                     Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
                     Console.Write("T");
 
-                    Tjuv.Meet(persons[i], persons);
-
+                    antalRobbed = Tjuv.Meet(persons[i], persons, antalRobbed);
+                                                    
                 }
 
             }
@@ -58,6 +62,9 @@ namespace InlamningsuppgiftTjuvOchPolis
 
         public static void WriteWorld(List<Person> persons)
         {
+            int antalArrested = 0;
+            int antalRobbed = 0;
+
             while (true)
             {
                 Console.SetCursorPosition(0, 0);
@@ -76,7 +83,7 @@ namespace InlamningsuppgiftTjuvOchPolis
 
                     if (persons[i] is Tjuv)
                     {
-                        Tjuv.Meet(persons[i], persons);
+                        Tjuv.Meet(persons[i], persons, antalRobbed);
 
                         foreach (Sak sak in ((Tjuv)persons[i]).Stoldgods)
                         {
@@ -86,7 +93,7 @@ namespace InlamningsuppgiftTjuvOchPolis
 
                     if (persons[i] is Polis)
                     {
-                        Polis.Meet(persons[i], persons);
+                        Polis.Meet(persons[i], persons, antalArrested);
 
                         foreach (Sak sak in ((Polis)persons[i]).Beslagtaget)
                         {
