@@ -11,48 +11,54 @@ namespace InlamningsuppgiftTjuvOchPolis
 {
     internal class Helpers
     {
-        public static void DrawWorld(List<Person> persons)
+        //metod som ritar upp "staden" och loopar den
+        public static void DrawCity(List<Person> persons)
         {
+            //antal för att hålla reda på antal rånade och antal arresterade
             int antalArrested = 0;
             int antalRobbed = 0;
 
             while (true) 
             {                  
+                //skriver ut antal rånade och antal arresterade längst ner under staden
                 Console.SetCursorPosition(0, 29);
                 Console.WriteLine("Antal rånade medborgare: " + antalRobbed);
                 Console.WriteLine("Antal gripna tjuvar: " + antalArrested);
 
-
+                //loopar igenom alla personer
                 for (int i = 0; i < persons.Count; i++)
                 {
+                //ritar ut M för medborgare om personen är det
                 if (persons[i] is Medborgare)
                 {
                     Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
                     Console.Write("M");
-
                 }
 
+                //ritar ut P för polis om personen är polis
                 if (persons[i] is Polis)
                 {
                     Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
                     Console.Write("P");
 
+                    //kör metoden polis möter och uppdaterar antalet arresreade om polisen mött en tjuv med stöldgods
                     antalArrested = Polis.Meet(persons[i], persons, antalArrested);
                     
-
                 }
 
+                //ritar ut T för tjuv om personen är en tjuv
                 if (persons[i] is Tjuv)
                 {
                     Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
                     Console.Write("T");
-
+                    
+                    //kör metoden tjuv möter och uppdaterar antalet rånade om tjuven mött en medborgare
                     antalRobbed = Tjuv.Meet(persons[i], persons, antalRobbed);
                                                     
                 }
 
             }
-
+                //förflyttar alla personer
                 Person.Move(persons);
 
                 Thread.Sleep(200);
