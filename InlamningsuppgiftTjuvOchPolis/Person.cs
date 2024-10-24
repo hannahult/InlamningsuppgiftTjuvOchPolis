@@ -99,9 +99,14 @@ namespace InlamningsuppgiftTjuvOchPolis
                             antalArrested++;
 
                             //skriver ut i konsolen
-                            string status = ("Polis beslagtar tjuvs stöldgods: " + polis.PositionX + ", " + polis.PositionY + "\n");
+                            
+
                             Console.SetCursorPosition(0, 26);
-                            Console.WriteLine(status);
+                            Console.WriteLine("Polis beslagtar tjuvs stöldgods: ");
+                            foreach (Sak sak in ((Polis)polis).Beslagtaget)
+                            {
+                                Console.Write(sak.Type + ", ");
+                            }
                             Thread.Sleep(2000);
                         } 
                     }
@@ -142,17 +147,16 @@ namespace InlamningsuppgiftTjuvOchPolis
 
                         //slumpmässiga saken läggs till på tjuvens lista med stöldgods och tas bort från medborgarens lista
                         ((Tjuv)tjuv).Stoldgods.Add(((Medborgare)person).Tillhorigheter[index]);
+
+                        //skrivs ut i konsolen 
+                        Console.SetCursorPosition(0, 26);
+                        Console.WriteLine("Tjuv rånar medborgare, han tog " + ((Medborgare)person).Tillhorigheter[index].Type + "\n");
+                        Thread.Sleep(2000);
+
                         ((Medborgare)person).Tillhorigheter.RemoveAt(index);
 
                         //antal rånade medborgare ökar
                         antalRobbed++;
-
-                        //skrivs ut i konsolen
-                        string status = "Tjuv rånar medborgare: " + tjuv.PositionX + ", " + tjuv.PositionY + "\n";
-                        Console.SetCursorPosition(0, 26);
-                        Console.WriteLine(status);
-                        Thread.Sleep(2000);
-
                     }
                 }
             }
