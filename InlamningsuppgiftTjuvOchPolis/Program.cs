@@ -42,7 +42,7 @@ namespace InlamningsuppgiftTjuvOchPolis
             //ritar upp och loopar staden
             Helpers.DrawCity(persons);
         
-            //Helpers.WriteWorld(persons);
+           
 
  
         }
