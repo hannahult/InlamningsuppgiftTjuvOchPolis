@@ -64,46 +64,46 @@ namespace InlamningsuppgiftTjuvOchPolis
         }
     }
 
-    class Polis : Person
+    class Police : Person
     {
-        public List<Sak> Beslagtaget { get; set; }
+        public List<Possesion> Confiscated { get; set; }
 
-        public Polis():base()
+        public Police():base()
         {          
             //skapar en tom lista för beslagtagna saker
 
-            List<Sak> beslagtaget = new List<Sak>();
+            List<Possesion> confistaced = new List<Possesion>();
 
-            Beslagtaget = beslagtaget;
+            Confiscated = confistaced;
         }
      
         //metod för mötet mellan polis och en person
-        public static int Meet(Person polis, List<Person> persons, int antalArrested)
+        public static int Meet(Person police, List<Person> persons, int numberOfArrested)
         {
             foreach (Person person in persons)
             {
                 //om de har samma position och möts
-                if (polis.PositionX == person.PositionX && polis.PositionY == person.PositionY)
+                if (police.PositionX == person.PositionX && police.PositionY == person.PositionY)
                 {
                     //om den polisen möter är en tjuv
-                    if (person is Tjuv && ((Tjuv)person).Stoldgods.Count!=0)
+                    if (person is Thief && ((Thief)person).StolenGods.Count!=0)
                     {
                         //om tjuven har stöldgods
-                        for (int i = 0; i < ((Tjuv)person).Stoldgods.Count; i++)                        
+                        for (int i = 0; i < ((Thief)person).StolenGods.Count; i++)                        
                         {                           
                             //polisen tar stöldgodset
-                            ((Polis)polis).Beslagtaget.Add(((Tjuv)person).Stoldgods[i]);
-                            ((Tjuv)person).Stoldgods.RemoveAt(i);
+                            ((Police)police).Confiscated.Add(((Thief)person).StolenGods[i]);
+                            ((Thief)person).StolenGods.RemoveAt(i);
 
                             //antal arresterade ökar
-                            antalArrested++;
+                            numberOfArrested++;
 
                             //skriver ut i konsolen
                             
 
                             Console.SetCursorPosition(0, 26);
                             Console.WriteLine("Polis beslagtar tjuvs stöldgods: ");
-                            foreach (Sak sak in ((Polis)polis).Beslagtaget)
+                            foreach (Possesion sak in ((Police)police).Confiscated)
                             {
                                 Console.Write(sak.Type + ", ");
                             }
@@ -113,74 +113,73 @@ namespace InlamningsuppgiftTjuvOchPolis
                 }
 
             }
-            return antalArrested;
+            return numberOfArrested;
         }
     }
 
-    class Tjuv : Person
+    class Thief : Person
     {
-        public List<Sak> Stoldgods { get; set; }
+        public List<Possesion> StolenGods { get; set; }
 
-        public Tjuv():base()
+        public Thief():base()
         {      
             //skapar en tom lista med stöldgods
 
-            List<Sak> stoldgods = new List<Sak>();
+            List<Possesion> stolenGods = new List<Possesion>();
             
-            Stoldgods = stoldgods;
+            StolenGods = stolenGods;
         }
         
         //metod för mötet mellan tjuv och person
-        public static int Meet(Person tjuv, List<Person> persons, int antalRobbed)
+        public static int Meet(Person thief, List<Person> persons, int numberOfRobbed)
         {            
             
             foreach (Person person in persons)
             {
                 //om de har samma position och möts
-                if (tjuv.PositionX == person.PositionX && tjuv.PositionY == person.PositionY)
+                if (thief.PositionX == person.PositionX && thief.PositionY == person.PositionY)
                 {
                     //om personen som möter tjuven är medborgare
-                    if (person is Medborgare && ((Medborgare)person).Tillhorigheter.Count != 0)
+                    if (person is Citizen && ((Citizen)person).Possesions.Count != 0)
                     {
                         //slumpmässigt tal som avgör vilken av medborgarens saker som ska bli stulen
-                        int index = Random.Shared.Next(0, ((Medborgare)person).Tillhorigheter.Count);
+                        int index = Random.Shared.Next(0, ((Citizen)person).Possesions.Count);
 
                         //slumpmässiga saken läggs till på tjuvens lista med stöldgods och tas bort från medborgarens lista
-                        ((Tjuv)tjuv).Stoldgods.Add(((Medborgare)person).Tillhorigheter[index]);
+                        ((Thief)thief).StolenGods.Add(((Citizen)person).Possesions[index]);
 
-                        //skrivs ut i konsolen 
                         Console.SetCursorPosition(0, 26);
-                        Console.WriteLine("Tjuv rånar medborgare, han tog " + ((Medborgare)person).Tillhorigheter[index].Type + "\n");
+                        Console.WriteLine("Tjuv rånar medborgare, han tog " + ((Citizen)person).Possesions[index].Type + "\n");
                         Thread.Sleep(2000);
 
-                        ((Medborgare)person).Tillhorigheter.RemoveAt(index);
+                        ((Citizen)person).Possesions.RemoveAt(index);
 
                         //antal rånade medborgare ökar
-                        antalRobbed++;
+                        numberOfRobbed++;
                     }
                 }
             }
 
-            return antalRobbed;
+            return numberOfRobbed;
 
         }
 
     }
-    class Medborgare : Person
+    class Citizen : Person
     {
-        public List<Sak> Tillhorigheter { get; set; }
+        public List<Possesion> Possesions { get; set; }
 
-        public Medborgare():base()
+        public Citizen():base()
         {          
             //skapar en lista med medborgarens tillhörigheter och lägger till dem
-            List <Sak> tillhorigheter = new List<Sak>();
+            List <Possesion> possesions = new List<Possesion>();
 
-            tillhorigheter.Add(new Sak("nycklar"));
-            tillhorigheter.Add(new Sak("mobil"));
-            tillhorigheter.Add(new Sak("plånbok"));
-            tillhorigheter.Add(new Sak("klocka"));
+            possesions.Add(new Possesion("nycklar"));
+            possesions.Add(new Possesion("mobil"));
+            possesions.Add(new Possesion("plånbok"));
+            possesions.Add(new Possesion("klocka"));
 
-            Tillhorigheter = tillhorigheter;
+            Possesions = possesions;
 
         }
     }

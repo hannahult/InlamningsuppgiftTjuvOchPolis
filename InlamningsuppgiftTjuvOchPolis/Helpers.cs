@@ -15,35 +15,35 @@ namespace InlamningsuppgiftTjuvOchPolis
         public static void DrawCity(List<Person> persons)
         {
             //antal för att hålla reda på antal rånade och antal arresterade
-            int antalArrested = 0;
-            int antalRobbed = 0;
+            int numberOfArrested = 0;
+            int numberOfRobbed = 0;
 
             while (true)
             {
                 //skriver ut antal rånade och antal arresterade längst ner under staden
                 Console.SetCursorPosition(0, 29);
-                Console.WriteLine("Antal rånade medborgare: " + antalRobbed);
-                Console.WriteLine("Antal gripna tjuvar: " + antalArrested);
+                Console.WriteLine("Antal rånade medborgare: " + numberOfRobbed);
+                Console.WriteLine("Antal gripna tjuvar: " + numberOfArrested);
 
                 //loopar igenom alla personer
                 for (int i = 0; i < persons.Count; i++)
                 {
                     //ritar ut M för medborgare om personen är det
-                    if (persons[i] is Medborgare)
+                    if (persons[i] is Citizen)
                     {
                         Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
                         Console.Write("M");
                     }
 
                     //ritar ut P för polis om personen är polis
-                    if (persons[i] is Polis)
+                    if (persons[i] is Police)
                     {
                         Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
                         Console.Write("P");
                     }
 
                     //ritar ut T för tjuv om personen är en tjuv
-                    if (persons[i] is Tjuv)
+                    if (persons[i] is Thief)
                     {
                         Console.SetCursorPosition(persons[i].PositionX, persons[i].PositionY);
                         Console.Write("T");
@@ -52,16 +52,16 @@ namespace InlamningsuppgiftTjuvOchPolis
 
                 for (int i = 0; i < persons.Count; i++)
                 {
-                    if (persons[i] is Polis)
+                    if (persons[i] is Police)
                     {
                         //kör metoden polis möter och uppdaterar antalet arresreade om polisen mött en tjuv med stöldgods
-                        antalArrested = Polis.Meet(persons[i], persons, antalArrested);
+                        numberOfArrested = Police.Meet(persons[i], persons, numberOfArrested);
 
                     }
-                    if (persons[i] is Tjuv)
+                    if (persons[i] is Thief)
                     {
                         //kör metoden tjuv möter och uppdaterar antalet rånade om tjuven mött en medborgare
-                        antalRobbed = Tjuv.Meet(persons[i], persons, antalRobbed);
+                        numberOfRobbed = Thief.Meet(persons[i], persons, numberOfRobbed);
 
                     }
                    
@@ -77,40 +77,40 @@ namespace InlamningsuppgiftTjuvOchPolis
             }
         }
         
-        public static List<Polis> CreateCops(int copsSize)
+        public static List<Police> CreatePolices(int policeSize)
         {
-            List<Polis> poliser = new List<Polis>();
+            List<Police> polices = new List<Police>();
 
-            for (int i = 0; i < copsSize; i++)
+            for (int i = 0; i < policeSize; i++)
             {
-                poliser.Add(new Polis());
+                polices.Add(new Police());
             }
 
-            return poliser;
+            return polices;
         }
 
-        public static List<Tjuv> CreateThieves(int thiefSize)
+        public static List<Thief> CreateThieves(int thiefSize)
         {
-            List<Tjuv> tjuvar = new List<Tjuv>();
+            List<Thief> thieves = new List<Thief>();
 
             for (int i = 0; i < thiefSize; i++)
             {
-                tjuvar.Add(new Tjuv());
+                thieves.Add(new Thief());
             }
 
-            return tjuvar;
+            return thieves;
         }
 
-        public static List<Medborgare> CreateCiticens(int citicenSize)
+        public static List<Citizen> CreateCiticens(int citicenSize)
         {
-            List<Medborgare> medborgare = new List<Medborgare>();
+            List<Citizen> citizens = new List<Citizen>();
 
             for (int i = 0; i < citicenSize; i++)
             {
-                medborgare.Add(new Medborgare());
+                citizens.Add(new Citizen());
             }
 
-            return medborgare;
+            return citizens;
         }  
 
     }

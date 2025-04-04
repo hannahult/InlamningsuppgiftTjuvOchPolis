@@ -7,36 +7,36 @@ namespace InlamningsuppgiftTjuvOchPolis
     {
         static void Main(string[] args)
         {
-            int copsSize = 10;
+            int policeSize = 10;
             int thiefSize = 20;
             int citicenSize = 30;
 
             
             //skapar poliser
-            List<Polis> poliser = new List<Polis>();
-            poliser = Helpers.CreateCops(copsSize);
+            List<Police> polices = new List<Police>();
+            polices = Helpers.CreatePolices(policeSize);
 
             //skapar tjuvar
-            List<Tjuv> tjuvar = new List<Tjuv>();
-            tjuvar = Helpers.CreateThieves(thiefSize);
+            List<Thief> thieves = new List<Thief>();
+            thieves = Helpers.CreateThieves(thiefSize);
 
             //skapar medborgare
-            List<Medborgare> medborgare = new List<Medborgare>();
-            medborgare = Helpers.CreateCiticens(citicenSize);   
+            List<Citizen> citizens = new List<Citizen>();
+            citizens = Helpers.CreateCiticens(citicenSize);   
             
             //lägger in alla olika personer i en och samma lista
             List<Person> persons = new List<Person>();         
-            foreach (Medborgare medborgares in medborgare)
+            foreach (Citizen citizen in citizens)
             {
-                persons.Add(medborgares);
+                persons.Add(citizen);
             }
-            foreach (Polis polis in poliser)
+            foreach (Police police in polices)
             {
-                persons.Add(polis);
+                persons.Add(police);
             }
-            foreach (Tjuv tjuv in tjuvar)
+            foreach (Thief thief in thieves)
             {
-                persons.Add(tjuv);  
+                persons.Add(thief);  
             }
             
             //ritar upp och loopar staden
